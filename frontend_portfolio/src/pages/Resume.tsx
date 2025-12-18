@@ -2,14 +2,9 @@ import { motion } from 'framer-motion';
 import { Download, ExternalLink, AlertCircle } from 'lucide-react';
 
 export default function Resume() {
-  // -----------------------------------------------------------------
-  // TODO: PASTE YOUR GOOGLE DRIVE FILE ID HERE
-  // Example: If link is https://drive.google.com/file/d/1abcXYZ.../view
-  // Then the ID is "1abcXYZ..."
-  // -----------------------------------------------------------------
+
   const fileId = "1AutxMwrtUzdEOluS3X0sh-6ZB6Q91rWW";
 
-  // These URLs are automatically generated based on the ID above
   const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
   const viewUrl = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
 
@@ -38,9 +33,7 @@ export default function Resume() {
             <ExternalLink size={18} className="mr-2" /> Open Drive
           </a>
 
-          {/* Download Button */}
-          {/* Note: Google Drive direct download links can sometimes be blocked by CORS, 
-              so opening the view URL is often safer, but we can try a direct download link too */}
+         
           <a
             href={viewUrl}
             target="_blank"
