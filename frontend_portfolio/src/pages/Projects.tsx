@@ -261,7 +261,7 @@ export interface Project {
 const projects: Project[] = [
   // Full details of the featured project (for the description block)
   {
-    title: 'Institutional Crypto Monitor',
+    title: 'Real-time Crypto Data Analytics & Intelligence Platform',
     company: 'Personal Portfolio',
     year: '2025',
     type: 'Full-Stack Data Engineering',
@@ -284,18 +284,7 @@ const projects: Project[] = [
     embedUrl: null,
     liveUrl: null,
   },
-  {
-    title: 'Enterprise Data Warehouse & ETL',
-    company: 'Wegagen Bank S.C',
-    year: '2022 - 2024',
-    type: 'Data Engineering',
-    description: 'Architected data warehouse structures and developed robust ETL pipelines using SSIS and SQL Server. Built interactive Power BI dashboards.',
-    techStack: ['ETL', 'Data Warehousing', 'Power BI', 'SQL', 'Data Modeling'],
-    imageUrl: 'https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&q=80&w=1000',
-    sourceUrl: '',
-    embedUrl: null,
-    liveUrl: null,
-  },
+
   {
     title: 'App Lifecycle Management System',
     company: 'INSA',
@@ -352,7 +341,7 @@ const Projects: React.FC = () => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="mb-20"
+        className="mb-15"
       >
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
           
@@ -389,7 +378,7 @@ const Projects: React.FC = () => {
           
           <CryptoDashboard />
           
-          {/* --- PROJECT DETAILS PANEL (Below Dashboard) --- */}
+          {/* --- PROJECT DETAILS PANEL --- */}
           <div className="mt-6">
             
             {/* DESCRIPTION (THE "WHAT") */}
