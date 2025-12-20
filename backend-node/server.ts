@@ -31,13 +31,13 @@
 // const TEMP_KEY_PATH = '/tmp/gcp-key.json';
 
 // const getBigQueryClient = () => {
-    
+
 //     // 1. Check for Environment Variable (Render's SECURE Method)
 //     const keyString = process.env.GCP_SERVICE_ACCOUNT_KEY;
 
 //     if (keyString) {
 //         log('🔑 Authenticating via secure Environment Variable (Writing temp file)');
-        
+
 //         try {
 //             // Write the environment variable content to a temporary file
 //             fs.writeFileSync(TEMP_KEY_PATH, keyString);
@@ -52,7 +52,7 @@
 //             throw new Error(`CRITICAL: Deployment failure in secure authentication step.`);
 //         }
 //     } 
-    
+
 //     // 2. Fallback to Local File (Local Development Only)
 //     const localKeyPath = path.join(__dirname, KEY_PATH);
 //     if (fs.existsSync(localKeyPath)) {
@@ -187,7 +187,7 @@
 // app.use(cors({ 
 //     origin: (origin, callback) => {
 //         if (!origin) return callback(null, true); 
-        
+
 //         if (ALLOWED_ORIGINS.includes(origin)) {
 //             callback(null, true);
 //         } else {
@@ -209,13 +209,13 @@
 
 // // --- BIGQUERY CLIENT (SECURE, ENVIRONMENT-AWARE FUNCTION) ---
 // const getBigQueryClient = () => {
-    
+
 //     // 1. Check for Environment Variable (Render's SECURE Method)
 //     const keyString = process.env.GCP_SERVICE_ACCOUNT_KEY;
 
 //     if (keyString) {
 //         log('🔑 Authenticating via secure Environment Variable (Writing temp file)');
-        
+
 //         try {
 //             // Write the environment variable content to a temporary file
 //             fs.writeFileSync(TEMP_KEY_PATH, keyString);
@@ -230,7 +230,7 @@
 //             throw new Error(`CRITICAL: Deployment failure in secure authentication step.`);
 //         }
 //     } 
-    
+
 //     // 2. Fallback to Local File (Local Development Only)
 //     const localKeyPath = path.join(__dirname, KEY_PATH);
 //     if (fs.existsSync(localKeyPath)) {
@@ -338,10 +338,10 @@ import cors from 'cors';
 import { BigQuery } from '@google-cloud/bigquery';
 import path from 'path';
 import fs from 'fs';
-import { Credentials } from 'google-auth-library'; 
+import { Credentials } from 'google-auth-library';
 
 const app = express();
-const PORT = process.env.PORT || 8000; 
+const PORT = process.env.PORT || 8000;
 const PROJECT_ID = 'loyal-weaver-471905-p9';
 
 // The local path is only used for local development fallback
@@ -353,31 +353,16 @@ const ALLOWED_ORIGINS = [
     'http://localhost:3000',         // 1. Local Dev
     'https://meresa.vercel.app',     // 2. Production Domain (NO trailing slash)
     // 3. Vercel Preview/Subdomain Regex (Allows all staging builds)
-    /https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/, 
+    /https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/,
 ];
 
-app.use(cors({ 
-    origin: (origin, callback) => {
-        // Allow requests with no origin (e.g., Postman, server-to-server)
-        if (!origin) return callback(null, true);
-        
-        // Check 1: Simple String Whitelist
-        if (ALLOWED_ORIGINS.includes(origin)) {
-            return callback(null, true);
-        }
-
-        // Check 2: Regex Whitelist (The Vercel Preview Fix)
-        const vercelRegex = ALLOWED_ORIGINS.find(item => item instanceof RegExp);
-        if (vercelRegex && vercelRegex.test(origin)) {
-            return callback(null, true);
-        }
-
-        console.error(`CORS BLOCKED: Origin ${origin} not allowed.`);
-        callback(new Error('Not allowed by CORS'), false);
-    },
+app.use(cors({
+    // Allowing the specific domains (Vercel, Localhost) and letting the browser handle the rest
+    origin: ['http://localhost:3000', 'https://meresa.vercel.app', /https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/],
     methods: ['GET', 'OPTIONS'],
-    allowedHeaders: ['Content-Type'],
+    allowedHeaders: ['Content-Type', 'Authorization'], // Add Authorization just in case
 }));
+
 app.use(express.json());
 
 
@@ -389,13 +374,13 @@ const log = (msg: string) => {
 
 // --- BIGQUERY CLIENT (SECURE, ENVIRONMENT-AWARE FUNCTION) ---
 const getBigQueryClient = () => {
-    
+
     // 1. Check for Environment Variable (Render's SECURE Method)
     const keyString = process.env.GCP_SERVICE_ACCOUNT_KEY;
 
     if (keyString) {
         log('🔑 Authenticating via secure Environment Variable (Writing temp file)');
-        
+
         try {
             // Write the environment variable content to a temporary file
             fs.writeFileSync(TEMP_KEY_PATH, keyString);
@@ -409,8 +394,8 @@ const getBigQueryClient = () => {
             console.error("CRITICAL: Failed to write/read temporary key file:", e);
             throw new Error(`CRITICAL: Deployment failure in secure authentication step.`);
         }
-    } 
-    
+    }
+
     // 2. Fallback to Local File (Local Development Only)
     const localKeyPath = path.join(__dirname, KEY_PATH);
     if (fs.existsSync(localKeyPath)) {
