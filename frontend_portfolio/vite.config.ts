@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import checker from "vite-plugin-checker";
-
 import dns from "node:dns";
 
 dns.setDefaultResultOrder("verbatim");
@@ -17,6 +16,15 @@ export default defineConfig({
       typescript: true,
     }),
   ],
+  
+  // --- ADDED BUILD CONFIGURATION HERE ---
+  build: {
+    // Vite's default output directory is 'dist'. We MUST change it to 'build'
+    // because Vercel is explicitly looking for a folder named 'build'.
+    outDir: 'build', 
+  },
+  // ------------------------------------
+
   server: {
     port: 3000,
     host: true,
