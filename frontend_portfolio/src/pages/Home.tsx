@@ -56,7 +56,7 @@ export default function Home() {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="text-5xl md:text-3xl font-extrabold tracking-tight mb-6"
+          className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6"
         >
           Meresa Gidey
         </motion.h1>
@@ -90,21 +90,23 @@ export default function Home() {
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }} 
+          initial={{ opacity: 0, y: 20 }} // Changed scale:0.8 to y:20 for a smoother entrance
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6, ease: 'easeOut' }}
           className="mt-8 text-center" // Add text-center if these buttons are centered on the page
         >
+          {/* NEW: Container for buttons to manage spacing */}
           <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
 
+            {/* PRIMARY BUTTON: Live Demo (Stronger focus on the main project) */}
             <Link
               to="/projects"
-              className="inline-flex items-center justify-center px-8 py-3 bg-indigo-800 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-[1.02] text-lg whitespace-nowrap"
+              className="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-[1.02] text-lg whitespace-nowrap"
             >
               Live Crypto Market Intelligence <ArrowRight className="ml-2" size={20} />
             </Link>
 
- 
+            {/* SECONDARY BUTTON: View Experience (More subtle styling) */}
             <Link
               to="/experience"
               className="inline-flex items-center justify-center px-8 py-3 bg-transparent border-2 border-indigo-600 hover:bg-indigo-600 text-indigo-600 hover:text-white dark:text-indigo-400 dark:hover:text-white font-semibold rounded-lg transition-colors duration-300 transform hover:scale-[1.02] text-lg whitespace-nowrap"
