@@ -113,12 +113,12 @@ const CryptoDashboard: React.FC = () => {
 
     // --- Delay for network stability (Keep this) ---
     if (isFirstLoad) {
-        await new Promise(resolve => setTimeout(resolve, 2000)); 
+        await new Promise(resolve => setTimeout(resolve, 20000)); 
     }
 
     // --- FINAL FIX: Use Fetch API with Aggressive Timeout ---
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25000); // 25 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 250000); // 25 second timeout
 
     try {
         const url = `${API_BASE_URL}/api/market-overview`;
