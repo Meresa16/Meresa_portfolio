@@ -101,7 +101,7 @@ export default function Home() {
             {/* PRIMARY BUTTON: Live Demo (Stronger focus on the main project) */}
             <Link
               to="/projects"
-              className="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-[1.02] text-lg whitespace-nowrap"
+              className="inline-flex items-center justify-center px-8 py-3 bg-transparent border-2 border-indigo-600 hover:bg-indigo-600 text-indigo-600 hover:text-white dark:text-indigo-400 dark:hover:text-white font-semibold rounded-lg transition-colors duration-300 transform hover:scale-[1.02] text-lg whitespace-nowrap"
             >
               Live Crypto Market Intelligence <ArrowRight className="ml-2" size={20} />
             </Link>
