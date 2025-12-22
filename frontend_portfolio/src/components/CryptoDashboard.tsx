@@ -66,10 +66,13 @@ const CryptoDashboard: React.FC = () => {
   // API URL (FIXED: Using the correct import.meta.env for Vite and fallback)
   // const API_BASE_URL = import.meta.env.VITE_RENDER_API_URL || 'http://localhost:8000';
 
-  const VERCEL_API_URL = import.meta.env.VITE_RENDER_API_URL;
-  const API_BASE_URL = (typeof VERCEL_API_URL === 'string' && VERCEL_API_URL.startsWith('http'))
-    ? VERCEL_API_URL 
-    : 'https://meresa.onrender.com'; // CRITICAL: Use the live domain as the hardcoded fallback
+  // const VERCEL_API_URL = import.meta.env.VITE_RENDER_API_URL;
+  // const API_BASE_URL = (typeof VERCEL_API_URL === 'string' && VERCEL_API_URL.startsWith('http'))
+  //   ? VERCEL_API_URL 
+  //   : 'https://meresa.onrender.com'; // CRITICAL: Use the live domain as the hardcoded fallback
+  const LIVE_RENDER_URL = 'https://meresa.onrender.com';
+  // We will skip all the complex environment variable checks and just use the live URL
+  const API_BASE_URL = LIVE_RENDER_URL;
 
 
   // --- 1. LOAD DATA FUNCTION (The Core Fetch Logic) ---
