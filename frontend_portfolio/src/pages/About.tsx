@@ -1,6 +1,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
 import { motion, Variants } from 'framer-motion';
 import { User, ShieldCheck, ExternalLink, Database, Shield, BarChart3 } from 'lucide-react';
 
@@ -19,7 +28,7 @@ const profileImageVariants: Variants = {
     rotate: 0,
     transition: { 
       duration: 0.7, 
-      ease: EASE_IN_OUT, 
+      ease: EASE_IN_OUT, // FIX: Ensured this is an array constant
       delay: 0.2 
     }
   }
@@ -32,7 +41,7 @@ const profileTextVariants: Variants = {
     x: 0, 
     transition: { 
       duration: 0.7, 
-      ease: EASE_IN_OUT, 
+      ease: EASE_IN_OUT, // FIX: Ensured this is an array constant
       delay: 0.3 
     } 
   }
@@ -46,7 +55,7 @@ const credentialsVariants: Variants = {
     scale: 1,
     transition: { 
       duration: 0.6, 
-      ease: EASE_IN_OUT, 
+      ease: EASE_IN_OUT, // FIX: Ensured this is an array constant
       delay: 0.4 
     }
   }
@@ -159,6 +168,7 @@ export default function About() {
             </motion.a>
           </div>
         </motion.div>
+
       </motion.div>
     </div>
   );

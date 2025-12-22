@@ -19,6 +19,7 @@ export default function Education() {
     { 
       title: "Power BI Certificate of Achievement", 
       issuer: "365 Data Science",
+      // specific link added here
       link: "https://learn.365financialanalyst.com/certificates/CC-37AF3DC2A1/" 
     },
     { 

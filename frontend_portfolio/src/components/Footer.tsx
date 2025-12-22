@@ -15,11 +15,32 @@ export default function Footer() {
               Meresa Gidey
             </Link>
             <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-              Cyber Data Analyst & Data Scientist based in Addis Ababa.
+              Cyber Data Analyst & Data Scientist based in Addis Ababa. Bridging the gap between complex data and strategic business decisions.
             </p>
           </div>
 
-
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              {[
+                { name: 'Home', path: '/' },
+                { name: 'Experience', path: '/experience' },
+                { name: 'Education', path: '/education' },
+                { name: 'Skills', path: '/skills' },
+                { name: 'Resume', path: '/resume' },
+              ].map((link) => (
+                <li key={link.name}>
+                  <Link 
+                    to={link.path} 
+                    className="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 text-sm flex items-center transition-colors"
+                  >
+                    <ChevronRight size={14} className="mr-1" /> {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* Contact Info */}
           <div>

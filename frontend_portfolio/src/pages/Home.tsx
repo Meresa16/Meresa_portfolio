@@ -1,12 +1,9 @@
 
-
 import { useState, useEffect } from 'react';
-import { motion, Variants } from 'framer-motion'; // Import Variants
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
-
-const EASE_IN_OUT = [0.42, 0, 0.58, 1] as const; 
 const roles = [
   "Cyber Data Analyst and Engineer",
   "Data Scientist"
@@ -32,6 +29,7 @@ export default function Home() {
       setTypingSpeed(isDeleting ? 50 : 150);
 
       if (!isDeleting && text === fullText) {
+        // Finished typing word, pause before deleting
         setTimeout(() => setIsDeleting(true), 1500);
       } else if (isDeleting && text === '') {
         // Finished deleting, move to next word
@@ -44,11 +42,11 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [text, isDeleting, loopNum, typingSpeed]);
 
-  
   return (
     <div
       className=" h-screen bg-cover bg-center  bg-no-repeat"
-      style={{ backgroundImage: "url('/image.png')" }} 
+      style={{ backgroundImage: "url('/public/image.png')" }}
+
     >
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
@@ -57,7 +55,7 @@ export default function Home() {
         <motion.h1
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: EASE_IN_OUT }} 
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6"
         >
           Meresa Gidey
@@ -85,30 +83,30 @@ export default function Home() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: EASE_IN_OUT }}
+          transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
           className="max-w-3xl text-lg md:text-2xl text-indigo-200 break-words md:break-normal mx-auto bg-transparent mb-8 leading-relaxed mt-4 text-center"
         >
           Specializing in SQL, ETL pipelines, predictive modeling, and business intelligence to drive data-driven strategies.
         </motion.p>
 
-        {/* CTA Button Block */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 20 }} // Changed scale:0.8 to y:20 for a smoother entrance
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6, ease: EASE_IN_OUT }}
-          className="mt-8 text-center"
+          transition={{ duration: 0.5, delay: 0.6, ease: 'easeOut' }}
+          className="mt-8 text-center" // Add text-center if these buttons are centered on the page
         >
+          {/* NEW: Container for buttons to manage spacing */}
           <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
 
-            {/* PRIMARY BUTTON: Live Demo */}
+            {/* PRIMARY BUTTON: Live Demo (Stronger focus on the main project) */}
             <Link
               to="/projects"
-              className="inline-flex items-center justify-center px-8 py-3 bg-transparent border-2 border-indigo-600 hover:bg-indigo-600 text-indigo-600 hover:text-white dark:text-indigo-400 dark:hover:text-white font-semibold rounded-lg transition-colors duration-300 transform hover:scale-[1.02] text-lg whitespace-nowrap"
+              className="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-[1.02] text-lg whitespace-nowrap"
             >
               Live Crypto Market Intelligence <ArrowRight className="ml-2" size={20} />
             </Link>
 
-            {/* SECONDARY BUTTON: View Experience */}
+            {/* SECONDARY BUTTON: View Experience (More subtle styling) */}
             <Link
               to="/experience"
               className="inline-flex items-center justify-center px-8 py-3 bg-transparent border-2 border-indigo-600 hover:bg-indigo-600 text-indigo-600 hover:text-white dark:text-indigo-400 dark:hover:text-white font-semibold rounded-lg transition-colors duration-300 transform hover:scale-[1.02] text-lg whitespace-nowrap"
@@ -122,3 +120,6 @@ export default function Home() {
     </div>
   );
 }
+
+
+

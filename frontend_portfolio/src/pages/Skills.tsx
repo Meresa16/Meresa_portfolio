@@ -6,7 +6,7 @@ export default function Skills() {
     {
       title: "Data Analysis & Visualization",
       icon: <Database size={24} />,
-      skills: ["SQL", "Python", "Excel",]
+      skills: [ "SQL","Python", "Excel", ]
     },
     {
       title: "Data Engineering & Big Data",
@@ -21,7 +21,7 @@ export default function Skills() {
     {
       title: "Programming ",
       icon: <Terminal size={24} />,
-      skills: ["JavaScript", "Docker", "Git"]
+      skills: ["JavaScript", "Docker", "Git" ]
     }
   ];
 
@@ -47,20 +47,20 @@ export default function Skills() {
       >
         <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">Technical Skills</h1>
         <p className="text-gray-600 dark:text-gray-200 max-w-4xl mx-auto leading-relaxed text-lg">
-          Leveraging a diverse and powerful toolkit to tackle complex data challenges, build robust systems, and drive impactful insights.
+         Leveraging a diverse and powerful toolkit to tackle complex data challenges, build robust systems, and drive impactful insights.
 
         </p>
       </motion.div>
 
-      <motion.div
+      <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto bg-gray-200 dark:bg-gray-900 p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700"
       >
         {skillCategories.map((cat, idx) => (
-          <motion.div
-            key={idx}
+          <motion.div 
+            key={idx} 
             variants={itemVariants}
             className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
           >
@@ -70,11 +70,11 @@ export default function Skills() {
               </div>
               <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{cat.title}</h3>
             </div>
-
+            
             <div className="flex flex-wrap gap-2">
               {cat.skills.map((skill) => (
-                <span
-                  key={skill}
+                <span 
+                  key={skill} 
                   className="px-3 py-1 text-sm font-medium bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600"
                 >
                   {skill}

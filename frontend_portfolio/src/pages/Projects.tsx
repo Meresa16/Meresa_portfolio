@@ -5,7 +5,7 @@ import { Github, X } from 'lucide-react';
 import ProjectCard from '../components/ProjectCard';
 import CryptoDashboard from '../components/CryptoDashboard'; 
 
-// --- 1. Project Interface ---
+// --- 1. Project Interface (Must be defined here for type safety) ---
 export interface Project {
   title: string;
   company: string;
@@ -19,21 +19,9 @@ export interface Project {
   liveUrl: string | null;
 }
 
-// --- 2. Data Array ---
+// --- 2. Data Array (Used for the lower grid) ---
 const projects: Project[] = [
-  // Full details of the featured project 
-  {
-    title: 'Real-time Crypto Data Analytics & Intelligence Platform',
-    company: 'Personal Portfolio',
-    year: '2025',
-    type: null,
-    description: null,
-    techStack: [null],
-    imageUrl: 'https://images.unsplash.com/photo-1642104704074-907c0698cbd9?auto=format&fit=crop&q=80&w=1000',
-    sourceUrl: 'https://github.com/Meresa16/crypto-etl',
-    embedUrl: null,
-    liveUrl: null,
-  },
+  // IMPORTANT: The Crypto Monitor project is NOT here, as it's the main featured element.
   {
     title: 'Financial Fraud Detection System',
     company: 'Wegagen Bank S.C',
@@ -46,8 +34,7 @@ const projects: Project[] = [
     embedUrl: null,
     liveUrl: null,
   },
-
-  {
+{
     title: 'App Lifecycle Management System',
     company: 'INSA',
     year: '2019 - 2022',
@@ -61,7 +48,7 @@ const projects: Project[] = [
   },
 ];
 
-// Animation Variants 
+// Animation Variants (Kept for consistency)
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -77,9 +64,9 @@ const Projects: React.FC = () => {
   const handleCardImageClick = (project: Project) => {
     setZoomedImage(project.imageUrl);
   };
-
-  // Get the featured project's data for the top section
-  const featuredProject = projects[0];
+  
+  // Featured Project Tech Stack (For the descriptive card)
+  const featuredStack = ['NodeJS', 'ExpressJS', 'BigQuery', 'dbt', 'NextJS', 'Recharts'];
 
   return (
     <div className="container mx-auto px-6 py-20 relative">
@@ -103,7 +90,7 @@ const Projects: React.FC = () => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="mb-15"
+        className="mb-20"
       >
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
           
@@ -115,7 +102,7 @@ const Projects: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                 </span>
-                {featuredProject.title}
+                Crypto Monitor
               </h2>
               
               {/* CORRECTED ARCHITECTURE FLOW DESCRIPTION */}
@@ -140,53 +127,33 @@ const Projects: React.FC = () => {
           
           <CryptoDashboard />
           
-          {/* --- PROJECT DETAILS PANEL --- */}
+          {/* --- PROJECT DETAILS PANEL (Below Dashboard) --- */}
           <div className="mt-6">
-            
-            {/* DESCRIPTION (THE "WHAT") */}
-            {/* <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300">
-                Full-Stack Data Engineering
-            </h3> */}
-            
-            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4 pt-2 pb-4 border-b border-gray-200 dark:border-gray-700">
-              {featuredProject.description}
-            </p>
 
-            {/* TECH STACK (THE "HOW") */}
-            {/* <div className="mb-6">
-              <p className="text-gray-700 dark:text-gray-300 font-semibold mb-3">Technologies Used:</p>
-              <div className="flex flex-wrap gap-2">
-                {featuredProject.techStack.map((tech) => (
-                  <span key={tech} className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs rounded-lg font-medium">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div> */}
-
+            
             {/* Source Link Footer for the Dashboard */}
-            <div className="mt-4 text-sm text-center">
+            {/* <div className="mt-4 text-sm text-center">
                 <a 
-                    href={featuredProject.sourceUrl} 
+                    href="https://github.com/Meresa16/crypto-etl" 
                     target="_blank" 
                     rel="noreferrer"
                     className="flex items-center justify-center gap-2 text-indigo-600 dark:text-indigo-400 hover:underline transition-colors"
                 >
-                    <Github size={16} /> View Complete Pipeline Source Code
+                    View Complete Pipeline Source Code
                 </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </motion.div>
 
-      {/* --- PROJECT GRID (The other projects) --- */}
+      {/* --- PROJECT GRID --- */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8"
       >
-        {projects.slice(1).map((project, index) => ( 
+        {projects.map((project, index) => (
           <div key={index} className="relative">
             <ProjectCard
               project={project}
@@ -223,7 +190,7 @@ const Projects: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* --- MODAL FOR EMBEDDED IFRAMES --- */}
+      {/* --- MODAL FOR EMBEDDED IFRAMES (Existing - remains the same) --- */}
       <AnimatePresence>
         {selectedProject && selectedProject.embedUrl && (
           <motion.div
