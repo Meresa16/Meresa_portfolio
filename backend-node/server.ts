@@ -180,27 +180,16 @@ const KEY_PATH = 'loyal-weaver-471905-p9-44de225b313c.json';
 const TEMP_KEY_PATH = '/tmp/gcp-key.json'; // Render's writable path
 
 // --- CORS Configuration ---
+// Define the allowed origins as a simple array of strings and RegExp
 const ALLOWED_ORIGINS = [
     'http://localhost:3000',         
     'https://meresa.vercel.app',     
-    /https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/, // Vercel Preview Regex
+    /https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/, // Allows ALL Vercel preview/staging subdomains
 ];
 
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true); 
-        const isAllowed = ALLOWED_ORIGINS.some(item => {
-            if (typeof item === 'string') return item === origin;
-            return item.test(origin);
-        });
-        
-        if (isAllowed) {
-            callback(null, true);
-        } else {
-            console.error(`CORS BLOCKED: Origin ${origin} not allowed.`);
-            callback(new Error('Not allowed by CORS'), false);
-        }
-    },
+    // FIX: Pass the array directly. The 'cors' library handles all the internal logic perfectly.
+    origin: ALLOWED_ORIGINS, 
     methods: ['GET', 'OPTIONS'],
     allowedHeaders: ['Content-Type'],
 }));
