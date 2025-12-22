@@ -51,6 +51,10 @@
 
 
 
+
+
+
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -58,9 +62,11 @@ import path from "path";
 import checker from "vite-plugin-checker";
 import dns from "node:dns";
 
+// Read the Vercel-set environment variable
+const VERCEL_RENDER_URL = process.env.VITE_RENDER_API_URL || 'http://localhost:8000';
+
 dns.setDefaultResultOrder("verbatim");
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -70,35 +76,20 @@ export default defineConfig({
     }),
   ],
   
-  // --- FINAL OPTIMIZED BUILD CONFIGURATION ---
-  build: {
-    // 1. Output Directory Fix (MUST be 'build' for Vercel)
-    outDir: 'build', 
-    
-    // 2. Adjust warning limit (Optional: raises warning threshold to 1MB)
-    chunkSizeWarningLimit: 1000, 
-
-    // 3. Code-Splitting Optimization (Manual Chunks)
-    rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            // Group the largest libraries into their own chunks
-            if (id.includes('recharts') || id.includes('d3')) {
-              return 'vendor_recharts';
-            }
-            if (id.includes('axios') || id.includes('google-auth')) {
-                return 'vendor_api';
-            }
-            // All other smaller vendor packages go here
-            return 'vendor_general'; 
-          }
-        },
-      },
-    },
+  // --- FINAL FIX: Inject the Variable as a String Literal ---
+  define: {
+    // This tells the compiler: "Wherever you see import.meta.env.VITE_RENDER_API_URL, 
+    // replace it with the actual value as a string."
+    'import.meta.env.VITE_RENDER_API_URL': JSON.stringify(VERCEL_RENDER_URL),
   },
-  // ------------------------------------
+  // --------------------------------------------------------
 
+  build: {
+    outDir: 'build', 
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: { /* ... (chunks config) ... */ } 
+  },
+  
   server: {
     port: 3000,
     host: true,
