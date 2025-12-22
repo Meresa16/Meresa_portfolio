@@ -208,7 +208,7 @@ const CryptoDashboard: React.FC = () => {
         <div className="flex items-center gap-3">
           <Database className="text-cyan-500" />
           <div>
-            <h1 className="text-2xl font-bold">Crypto Data Viz</h1>
+            <h1 className="text-2xl font-bold">Live Crypto API Dashboard</h1>
             <p className="text-xs text-gray-500 font-mono">BIGQUERY LIVE FEED • {marketData.length} ASSETS TRACKED</p>
           </div>
         </div>
