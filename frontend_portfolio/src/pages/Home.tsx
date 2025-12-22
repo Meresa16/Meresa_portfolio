@@ -58,6 +58,7 @@ export default function Home() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6"
         >
+        
           Meresa Gidey
         </motion.h1>
 

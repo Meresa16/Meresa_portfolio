@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, LogOut } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 const navLinks = [
@@ -12,7 +12,7 @@ const navLinks = [
   { name: 'About', path: '/about' },
   { name: 'Education', path: '/education' },
   { name: 'Experience', path: '/experience' },
-  {name: 'Projects', path: '/projects' },
+  { name: 'Projects', path: '/projects' },
   { name: 'Skills', path: '/skills' },
   { name: 'Resume', path: '/resume' },
   { name: 'Contact', path: '/contact' },
@@ -24,10 +24,36 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/90 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
-      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Brand Name */}
-        <Link to="/" className="text-4xl font-bold text-gray-800 dark:text-white tracking-tight">
-          Meresa Gidey
+      <nav className="container mx-auto px-6 py-2 flex justify-between items-center">
+        
+        {/* Brand Name / Logo Section (FIXED ALIGNMENT) */}
+        <Link to="/" className="flex items-center gap-3">
+          
+          {/* Logo Container */}
+          <div
+            className="
+              w-15 h-15            /* Smaller size for header (w-10/h-10) */
+              rounded-full         /* Makes the container a perfect circle */
+              bg-gray-200/50 dark:bg-gray-700/50 /* Subtle background color */
+              p-0.5                /* Optional: slight padding/border effect */
+              shadow-md
+            "
+          >
+            <img
+              src="/favicon1.png"  /* Path to your image */
+              alt="Meresa Gidey Profile Logo"
+              className="
+                w-full h-full      /* Make image fill the container */
+                rounded-full       /* CRITICAL: Makes the image itself circular */
+                object-cover       /* Ensures the image fills the circle without distortion */
+              "
+            />
+          </div>
+          
+          {/* Restored Name (Properly sized and aligned) */}
+          <span className="text-xl font-bold text-gray-800 dark:text-white tracking-tight">
+          </span>
+
         </Link>
 
         {/* Desktop Navigation */}
@@ -37,10 +63,9 @@ export default function Header() {
               key={link.path}
               to={link.path}
               className={({ isActive }) =>
-                `text-lg font-medium transition-colors ${
-                  isActive 
-                    ? 'text-indigo-600 dark:text-indigo-400 font-semibold' 
-                    : 'text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400'
+                `text-lg font-medium transition-colors ${isActive
+                  ? 'text-indigo-600 dark:text-indigo-400 font-semibold'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400'
                 }`
               }
             >
@@ -48,7 +73,7 @@ export default function Header() {
             </NavLink>
           ))}
 
-          {/* Dark Mode Toggle */}
+          {/* Dark Mode Toggle (Remains the same) */}
           <button
             onClick={toggleTheme}
             className="ml-4 p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors focus:outline-none"
@@ -58,16 +83,16 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Controls (Theme Toggle + Menu Button) */}
+        {/* Mobile Controls (Remains the same) */}
         <div className="lg:hidden flex items-center space-x-4">
-          <button 
-            onClick={toggleTheme} 
+          <button
+            onClick={toggleTheme}
             className="text-gray-600 dark:text-gray-300 focus:outline-none"
           >
-             {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
+            {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
           </button>
-          <button 
-            onClick={() => setIsOpen(!isOpen)} 
+          <button
+            onClick={() => setIsOpen(!isOpen)}
             className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus:outline-none"
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -75,7 +100,7 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu Dropdown (Remains the same) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -91,10 +116,9 @@ export default function Header() {
                   to={link.path}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
-                    `text-lg font-medium transition-colors ${
-                      isActive 
-                        ? 'text-indigo-600 dark:text-indigo-400' 
-                        : 'text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400'
+                    `text-lg font-medium transition-colors ${isActive
+                      ? 'text-indigo-600 dark:text-indigo-400'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400'
                     }`
                   }
                 >
