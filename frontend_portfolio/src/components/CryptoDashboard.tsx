@@ -8,7 +8,7 @@ import {
 import {
   ArrowUp, ArrowDown, Search, ArrowLeft, Database, Activity,
   ChevronLeft, ChevronRight, PieChart as PieIcon, Grid,
-  Layers, BarChart2, TrendingUp, Zap, RotateCcw, AlertTriangle
+  Layers, BarChart2, TrendingUp, RotateCcw, AlertTriangle
 } from 'lucide-react';
 
 // --- TYPES ---
@@ -63,19 +63,9 @@ const CryptoDashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // API URL (Reads from Vercel/Render Environment)
-  // FIX: Using the correct import.meta.env for Vite and fallback
-  // const API_BASE_URL = import.meta.env.VITE_RENDER_API_URL || 'http://localhost:8000';
-  // Define the API_BASE_URL constant globally outside the component or at the start.
-// This time, we are being very explicit about the checks.
-  const VERCEL_API_URL = import.meta.env.VITE_RENDER_API_URL;
-  const API_BASE_URL = VERCEL_API_URL && VERCEL_API_URL.startsWith('http')
-    ? VERCEL_API_URL 
-    : 'http://localhost:8000'; // Fallback
+  // API URL (FIXED: Using the correct import.meta.env for Vite and fallback)
+  const API_BASE_URL = import.meta.env.VITE_RENDER_API_URL || 'http://localhost:8000';
 
-// Add a console check to see the final URL used
-  console.log("Using API Base URL:", API_BASE_URL); 
-// Then, use API_BASE_URL in your axios calls.
 
 
   // --- 1. LOAD DATA FUNCTION (The Core Fetch Logic) ---
@@ -84,15 +74,13 @@ const CryptoDashboard: React.FC = () => {
     setError(null);
     setIsRetrying(true);
 
-    // --- FINAL FIX: Delay for network stability ---
+    // --- FINAL FIX: Delay for network stability (2 seconds) ---
     if (isFirstLoad) {
-        // Wait 2 seconds before firing the FIRST request
         await new Promise(resolve => setTimeout(resolve, 2000)); 
     }
-    // --------------------------------------------------------------------------
 
     try {
-      // Use the custom Axios instance
+      // Use the custom Axios instance with the correct API URL
       const res = await apiAxios.get(`${API_BASE_URL}/api/market-overview`);
       
       if (res.data.length === 0) {
@@ -105,12 +93,8 @@ const CryptoDashboard: React.FC = () => {
     } catch (err: any) {
       console.error("Fetch Error:", err);
       // Logic for mobile cold start failure
-      if (isFirstLoad) {
-        setError("Initial connection failed (Backend is waking up). Please tap 'Retry'.");
-      } else {
-        // Only set error message if it's a new error after successful loads
-        setError("Failed to load data. Please check your network connection.");
-      }
+      setError("Initial connection failed (Backend is waking up). Please tap 'Retry'.");
+      
     } finally {
       setLoading(false);
       setIsRetrying(false);
@@ -344,7 +328,75 @@ const CryptoDashboard: React.FC = () => {
 
           {/* DATA TABLE */}
           <div className="bg-[#15191f] rounded-xl border border-gray-800 overflow-hidden">
-            {/* ... (Table content) ... */}
+            {loading ? (
+              <div className="flex justify-center p-20"><Activity className="animate-spin text-cyan-500" /></div>
+            ) : (
+              <>
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-[#0b0e11] text-gray-500 text-xs uppercase tracking-wider border-b border-gray-800">
+                      <th className="p-4">Rank</th>
+                      <th className="p-4">Asset</th>
+                      <th className="p-4 text-right">Price</th>
+                      <th className="p-4 text-right">24h Change</th>
+                      <th className="p-4 text-right hidden md:table-cell">Market Cap</th>
+                      <th className="p-4 text-right hidden md:table-cell">Drawdown</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-sm">
+                    {paginatedCoins.map((coin) => (
+                      <tr
+                        key={coin.symbol}
+                        onClick={() => handleDrillDown(coin.symbol)}
+                        className="hover:bg-gray-800/50 cursor-pointer transition-colors border-b border-gray-800/30 group"
+                      >
+                        <td className="p-4 text-gray-600 font-mono w-12">#{coin.rank}</td>
+                        <td className="p-4 flex items-center gap-3">
+                          {coin.logo_url && <img src={coin.logo_url} alt="" className="w-8 h-8 rounded-full" />}
+                          <div>
+                            <div className="font-bold">{coin.name}</div>
+                            <div className="text-xs text-gray-500">{coin.symbol.toUpperCase()}</div>
+                          </div>
+                        </td>
+                        <td className="p-4 text-right font-mono text-cyan-300">{fmtMoney(coin.price_usd)}</td>
+                        <td className="p-4 text-right">
+                          <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold ${coin.change_24h_pct >= 0 ? 'bg-green-900/20 text-green-400' : 'bg-red-900/20 text-red-400'}`}>
+                            {coin.change_24h_pct >= 0 ? <ArrowUp size={10} /> : <ArrowDown size={10} />}
+                            {Math.abs(coin.change_24h_pct).toFixed(2)}%
+                          </span>
+                        </td>
+                        <td className="p-4 text-right text-gray-400 hidden md:table-cell font-mono">${fmtCompact(coin.market_cap)}</td>
+                        <td className="p-4 text-right hidden md:table-cell font-mono text-red-400">{coin.drawdown_pct.toFixed(2)}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {/* PAGINATION CONTROLS */}
+                <div className="flex justify-between items-center p-4 bg-[#0b0e11] border-t border-gray-800">
+                  <span className="text-xs text-gray-500">
+                    Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredCoins.length)} of {filteredCoins.length} assets
+                  </span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="p-2 rounded bg-gray-800 hover:bg-gray-700 disabled:opacity-50 transition-colors"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    <span className="px-3 py-1 bg-gray-800 rounded text-sm flex items-center">{currentPage} / {totalPages}</span>
+                    <button
+                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="p-2 rounded bg-gray-800 hover:bg-gray-700 disabled:opacity-50 transition-colors"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -355,19 +407,42 @@ const CryptoDashboard: React.FC = () => {
 
           {/* COIN HEADER */}
           <div className="flex flex-col md:flex-row gap-6 mb-8">
-            {/* ... (Header content) ... */}
-          </div>
+            <div className="flex items-center gap-4">
+              <img src={selectedCoin.logo_url} className="w-16 h-16 rounded-full shadow-lg border-2 border-gray-800" alt="" />
+              <div>
+                <h2 className="text-4xl font-bold text-white">{selectedCoin.name}</h2>
+                <div className="flex gap-3 mt-2 text-sm font-mono text-gray-400">
+                  <span className="bg-gray-800 px-2 py-1 rounded">RANK #{selectedCoin.rank}</span>
+                  <span className="bg-gray-800 px-2 py-1 rounded">VOL: ${fmtCompact(selectedCoin.total_volume)}</span>
+                </div>
+              </div>
+            </div>
 
-          {/* KPI BOXES */}
-          {/* ... (KPI boxes remain the same) ... */}
+            {/* KPI BOXES */}
+            <div className="flex-1 grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="bg-[#15191f] p-4 rounded-xl border border-gray-800">
+                <div className="text-gray-500 text-[10px] uppercase font-bold">Price</div>
+                <div className="text-2xl font-bold">{fmtMoney(selectedCoin.price_usd)}</div>
+              </div>
+              <div className="bg-[#15191f] p-4 rounded-xl border border-gray-800">
+                <div className="text-gray-500 text-[10px] uppercase font-bold">24h Change</div>
+                <div className={`text-2xl font-bold ${selectedCoin.change_24h_pct >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {selectedCoin.change_24h_pct.toFixed(2)}%
+                </div>
+              </div>
+              <div className="bg-[#15191f] p-4 rounded-xl border border-gray-800">
+                <div className="text-gray-500 text-[10px] uppercase font-bold">ATH Drawdown</div>
+                <div className="text-2xl font-bold text-red-400">{selectedCoin.drawdown_pct.toFixed(2)}%</div>
+              </div>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             {/* CHART 1: PRICE TIME SERIES */}
             <div className="lg:col-span-2 bg-[#15191f] p-4 rounded-xl border border-gray-800 h-[400px]">
               <h3 className="text-sm font-bold text-gray-400 mb-4 uppercase">Historical Price Action</h3>
-              {/* FIX: min-width wrapper */}
-              <div style={{ width: '100%', height: '90%', minWidth: '0px', overflow: 'hidden' }}> 
+              <div style={{ width: '100%', height: '90%', minWidth: '0px' }}> 
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={history}>
                     <defs>
@@ -521,6 +596,20 @@ const RiskGauge = ({ value }: { value: number }) => {
 };
 
 export default CryptoDashboard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
