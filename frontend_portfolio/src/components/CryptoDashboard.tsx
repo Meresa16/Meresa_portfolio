@@ -111,10 +111,10 @@ const CryptoDashboard: React.FC = () => {
     setError(null);
     setIsRetrying(true);
 
-    // --- Delay for network stability (Keep this) ---
-    // if (isFirstLoad) {
-    //     await new Promise(resolve => setTimeout(resolve, 20000)); 
-    // }
+    --- Delay for network stability (Keep this) ---
+    if (isFirstLoad) {
+        await new Promise(resolve => setTimeout(resolve, 20000)); 
+    }
 
     // --- FINAL FIX: Use Fetch API with Aggressive Timeout ---
     const controller = new AbortController();
@@ -134,9 +134,9 @@ const CryptoDashboard: React.FC = () => {
         
         const data = await response.json();
         
-        // if (data.length === 0) {
-        //      throw new Error("API returned an empty dataset.");
-        // }
+        if (data.length === 0) {
+             throw new Error("API returned an empty dataset.");
+        }
         
         setMarketData(data);
         setIsFirstLoad(false);
@@ -144,15 +144,15 @@ const CryptoDashboard: React.FC = () => {
     } catch (err: any) {
         clearTimeout(timeoutId);
         
-        // if (err.name === 'AbortError') {
-        //      // Specific error for timeout (This is the expected cold-start failure)
-        //      setError("Connection timed out (Server still waking up). Please tap 'Retry' again.");
-        // } else {
-        //      // Generic failure
-        //      console.error("Fetch Error:", err);
-        //      setError("Connection failed. The server is either offline or the network timed out.");
+        if (err.name === 'AbortError') {
+             // Specific error for timeout (This is the expected cold-start failure)
+             setError("Connection timed out (Server still waking up). Please tap 'Retry' again.");
+        } else {
+             // Generic failure
+             console.error("Fetch Error:", err);
+             setError("Connection failed. The server is either offline or the network timed out.");
         // }
-      setError("The server is waking up. this can take upto 60 seconds on the first load.")
+      // setError("The server is waking up. this can take upto 60 seconds on the first load.")
     } finally {
         setLoading(false);
         setIsRetrying(false);
