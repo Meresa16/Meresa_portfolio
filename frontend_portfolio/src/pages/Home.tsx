@@ -45,7 +45,7 @@ export default function Home() {
   return (
     <div
       className=" h-screen bg-cover bg-center  bg-no-repeat"
-      style={{ backgroundImage: "url('/public/image.png')" }}
+      style={{ backgroundImage: "url('/image.png')" }}
 
     >
       <div className="absolute inset-0 bg-black/50" />

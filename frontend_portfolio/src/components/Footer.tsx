@@ -15,12 +15,12 @@ export default function Footer() {
               Meresa Gidey
             </Link>
             <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-              Cyber Data Analyst & Data Scientist based in Addis Ababa. Bridging the gap between complex data and strategic business decisions.
+              Cyber Data Analyst & Data Scientist based in Addis Ababa. Passionate about transforming data into actionable insights and driving strategic decisions through advanced analytics.
             </p>
           </div>
 
           {/* Quick Links */}
-          <div>
+          {/* <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {[
@@ -40,7 +40,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Contact Info */}
           <div>
