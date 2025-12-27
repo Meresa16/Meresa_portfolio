@@ -41,7 +41,7 @@ const projects: Project[] = [
     type: 'Software Dev',
     description: 'Managed the full software development life cycle (SDLC). Developed scalable software solutions using the MERN stack.',
     techStack: ['ExpressJS', 'NextJS', 'MongoDB', 'Docker', 'Git'],
-    imageUrl: '/task mgt.png',
+    imageUrl: '/background Image.png',
     liveUrl: 'https://task-mogndb.vercel.app/login',
     sourceUrl: '',
     embedUrl: null,
